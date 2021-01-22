@@ -1,38 +1,88 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+	color: black;
+	background: white;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container {
+	max-width: 1600px;
+	padding: 2rem;
+}
+input[type='file'] {
+	display: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.custom-file-upload {
+	font-size: 3rem;
+	color: rgba(247, 11, 101, 0.568);
+	cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
+.nav {
+	border-bottom: 3px solid black;
+	font-size: 1.5rem;
+	color: rgba(247, 11, 101, 0.568);
+	letter-spacing: 4px;
+	padding: 0.8rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h2 {
+	text-align: center;
+	margin: 2rem;
+	margin-bottom: 8px;
+	color: rgba(19, 58, 187, 0.897);
+}
+
+.progress-bar {
+	height: 5px;
+	background: pink;
+	margin-top: 1rem;
+	max-width: 1600px;
+}
+
+.img-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 350px);
+	grid-template-rows: repeat(auto-fit, 350px);
+	grid-gap: 3rem;
+	justify-content: center;
+}
+.img-wrap {
+	opacity: 0.8;
+}
+.img-wrap > img {
+	height: 100%;
+	width: 100%;
+	display: block;
+	object-fit: cover;
+}
+
+.backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+.backdrop img {
+	display: block;
+	max-width: 60%;
+	max-height: 80%;
+	margin: 4rem auto;
+	box-shadow: 2px 5px 7px rgba(0, 0, 0, 0.5);
+	border: 2px solid white;
+}
+
+form {
+	text-align: center;
 }
