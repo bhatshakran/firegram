@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export default function ImageGrid({ setSelectedImg }) {
 	const { docs } = useFirestore('images');
-	console.log(docs);
+
 	return (
 		<>
 			<div className='container'>

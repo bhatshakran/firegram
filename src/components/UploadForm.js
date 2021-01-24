@@ -20,7 +20,7 @@ const UploadForm = () => {
 	};
 	return (
 		<form className='container'>
-			<label class='custom-file-upload'>
+			<label className='custom-file-upload'>
 				<IoIosAddCircle />
 				<input type='file' onChange={changeHandler} />
 			</label>

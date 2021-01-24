@@ -3,21 +3,26 @@
 import firebase from 'firebase/app';
 import 'firebase/storage';
 import 'firebase/firestore';
+import 'firebase/auth';
 
 var firebaseConfig = {
-	apiKey: 'AIzaSyB_tYaEN8pETCV4j2fuyRPwCwigTtDQL2Y',
-	authDomain: 'images-app-d0fb0.firebaseapp.com',
-	projectId: 'images-app-d0fb0',
-	storageBucket: 'images-app-d0fb0.appspot.com',
-	messagingSenderId: '810955644548',
-	appId: '1:810955644548:web:4a7be74b88dfcc4001acd1',
-	measurementId: 'G-MT4QF4CL1R',
+	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+	projectId: process.env.REACT_APP_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_MESSGING_SENDER_ID,
+	appId: process.env.REACT_APP_APPL_ID,
+	measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
 const projectStorage = firebase.storage();
+const auth = firebase.auth();
 const projectFirestore = firebase.firestore();
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
-
-export { projectStorage, projectFirestore, timestamp };
+const provider = new firebase.auth.GoogleAuthProvider();
+export const signInWithGoogle = () => {
+	auth.signInWithRedirect(provider);
+};
+export { projectStorage, projectFirestore, auth, timestamp };
