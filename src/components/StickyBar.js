@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { FaUserCircle, FaHeart } from 'react-icons/fa';
 import { HiHome } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
-import ProfilePage from './ProfilePage';
 
 const StickyBar = () => {
 	return (

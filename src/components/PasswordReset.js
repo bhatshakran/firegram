@@ -20,6 +20,7 @@ const PasswordReset = () => {
 			setError('');
 			setLoading(true);
 			await resetPassword(emailRef.current.value);
+			history.push('/signin');
 		} catch {
 			setError('Failed to Reset Password');
 		}

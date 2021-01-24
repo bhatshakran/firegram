@@ -62,7 +62,7 @@ const SignIn = () => {
 					</button>
 					<button className='btn-signInWithGoogle'>Sign In with Google</button>
 				</div>
-				<p>Forgot Password?</p>
+				<p style={{ marginTop: '1rem' }}>Forgot Password?</p>
 				<Link to='/forgotpassword'>Reset Password</Link>
 				<p className='notAuser'>
 					Dont have an account?

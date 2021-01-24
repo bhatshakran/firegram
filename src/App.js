@@ -10,9 +10,9 @@ function App() {
 	return (
 		<Switch>
 			<PrivateRoute exact path='/' component={Home} />
-			<Route exact path='/signin' component={SignIn} />
-			<Route exact path='/signup' component={SignUp} />
-			<Route exact path='/forgotpassword' component={PasswordReset} />
+			<Route path='/signin' component={SignIn} />
+			<Route path='/signup' component={SignUp} />
+			<Route path='/forgotpassword' component={PasswordReset} />
 			<PrivateRoute path='/profilepage' component={ProfilePage} />
 		</Switch>
 	);

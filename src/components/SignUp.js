@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiFillFire } from 'react-icons/ai';
 import doodle from '../images/364.jpg';
@@ -26,6 +26,7 @@ const SignUp = () => {
 			setError('');
 			setLoading(true);
 			await signUp(emailRef.current.value, passwordRef.current.value);
+			useHistory.push('/');
 		} catch {
 			setError('Failed to create an account');
 		}

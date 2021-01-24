@@ -4,7 +4,6 @@ import Modal from './Modal';
 import { useState } from 'react';
 import Title from './Title';
 import UploadForm from './UploadForm';
-import ProfilePage from './ProfilePage';
 import StickyBar from './StickyBar';
 
 const Home = () => {
