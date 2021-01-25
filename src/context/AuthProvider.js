@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { auth } from '../firebase/config';
+import { auth, projectFirestore } from '../firebase/config';
 import { createContext } from 'react';
 
 const AuthContext = createContext();
@@ -23,14 +23,37 @@ export const AuthProvider = ({ children }) => {
 	function logOut() {
 		return auth.signOut();
 	}
+	// set up name and pic function
+	function setupNameAndPhoto(name, pic) {
+		var user = auth.currentUser;
+		user
+			.updateProfile({
+				displayName: `${name}`,
+				photoURL: `${pic}`,
+			})
+			.then(function () {
+				var user = auth.currentUser;
+				var storageRef = projectFirestore.ref(
+					`${user}  /profilePicture/profilePic.jpg`
+				);
+				var task = storageRef.put(pic);
+				console.log(task);
+				console.log('updated');
+
+				// Update successful.
+			})
+			.catch(function (error) {
+				console.log('unable to update');
+			});
+	}
 	// reset function
 
 	function resetPassword(email) {
-		console.log('clicled');
 		return auth.sendPasswordResetEmail(email);
 	}
 	// value
 	const value = {
+		setupNameAndPhoto,
 		resetPassword,
 		logOut,
 		signIn,

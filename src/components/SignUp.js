@@ -9,8 +9,7 @@ const SignUp = () => {
 	const emailRef = useRef();
 	const passwordRef = useRef();
 	const passwordConfirmRef = useRef();
-	const usernameRef = useRef();
-	const bioRef = useRef();
+
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
 	const { signUp } = useAuth();
@@ -26,6 +25,7 @@ const SignUp = () => {
 			setError('');
 			setLoading(true);
 			await signUp(emailRef.current.value, passwordRef.current.value);
+
 			useHistory.push('/');
 		} catch {
 			setError('Failed to create an account');
@@ -72,26 +72,7 @@ const SignUp = () => {
 						ref={passwordConfirmRef}
 					/>
 				</div>
-				<div className='form-control'>
-					<label htmlFor='username'>Username:</label>
-					<input
-						type='username'
-						placeholder='username'
-						name='username'
-						id='username'
-						ref={usernameRef}
-					/>
-				</div>
-				<div className='form-control'>
-					<label htmlFor='bio'>Add Bio:</label>
-					<input
-						type='bio'
-						placeholder='bio'
-						name='bio'
-						id='bio'
-						ref={bioRef}
-					/>
-				</div>
+
 				<div className='form-control buttons'>
 					<button className='btn-signUp' disabled={loading}>
 						Sign Up
@@ -140,6 +121,13 @@ h1{
 	color:#fff;
 	font-family: arial;
 }
+.pic-icon{
+	margin: 0 auto;
+	text-align:Center;
+	padding:1rem;
+	font-size:2.5rem;
+}
+
 	h3 {
 		font-family: 'Raleway', sans-serif;
 		margin: 1rem 0;
@@ -174,6 +162,7 @@ h1{
 	width: 100%;
 	
 }
+
 	input{
 		height: 40px;
 		padding: 0 0.3rem;
