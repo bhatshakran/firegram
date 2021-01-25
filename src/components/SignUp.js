@@ -13,7 +13,7 @@ const SignUp = () => {
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
 	const { signUp } = useAuth();
-
+	const history = useHistory();
 	async function onSubmitHandler(e) {
 		e.preventDefault();
 
@@ -26,7 +26,7 @@ const SignUp = () => {
 			setLoading(true);
 			await signUp(emailRef.current.value, passwordRef.current.value);
 
-			useHistory.push('/');
+			history.push('/');
 		} catch {
 			setError('Failed to create an account');
 		}

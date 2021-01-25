@@ -10,7 +10,7 @@ const ProfilePage = () => {
 	const picRef = useRef();
 	const [displayName, setDisplayName] = useState();
 	const [url, setUrl] = useState(window.localStorage.getItem('url'));
-
+	const [profilePic, setProfilePic] = useState();
 	const [error, setError] = useState('');
 	const { logOut, currentUser } = useAuth();
 	// console.log(currentUser);
@@ -89,8 +89,19 @@ const ProfilePage = () => {
 	};
 	// use effect
 
+	console.log(currentUser.uid);
 	useEffect(() => {
-		window.localStorage.getItem('url');
+		async function getUrl() {
+			window.localStorage.getItem('url');
+			var storageRef = projectStorage.ref();
+			var userRef = storageRef.child('users_dp');
+			var imageRef = userRef.child(`${currentUser.uid}/profile_pic.jpg`);
+
+			const url = await imageRef.getDownloadURL();
+			console.log(url);
+			setProfilePic(url);
+		}
+		getUrl();
 	}, []);
 
 	return (
@@ -104,7 +115,11 @@ const ProfilePage = () => {
 				</a>
 
 				{currentUser.displayName}
-				<img src={url} alt='' style={{ width: '150px', height: '150px' }} />
+				<img
+					src={profilePic}
+					alt=''
+					style={{ width: '150px', height: '150px' }}
+				/>
 				{/* {photo && <img src={photo} alt='profile_pic' />} */}
 				<div className='form-control'>
 					<label htmlFor='username'>Username:</label>
