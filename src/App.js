@@ -6,6 +6,8 @@ import PasswordReset from './components/PasswordReset';
 import { Switch, Route } from 'react-router-dom';
 import ProfilePage from './components/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
+import UpdateProfile from './components/UpdateProfile';
+
 function App() {
 	return (
 		<Switch>
@@ -14,6 +16,7 @@ function App() {
 			<Route path='/signup' component={SignUp} />
 			<Route path='/forgotpassword' component={PasswordReset} />
 			<PrivateRoute path='/profilepage' component={ProfilePage} />
+			<PrivateRoute path='/updateprofile' component={UpdateProfile} />
 		</Switch>
 	);
 }

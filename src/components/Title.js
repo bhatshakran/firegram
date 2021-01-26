@@ -8,7 +8,6 @@ const Title = () => {
 					Firegram
 					<AiFillFire />
 				</header>
-				<h2>Upload your photos</h2>
 			</div>
 		</>
 	);

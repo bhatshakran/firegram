@@ -1,10 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@font-face {
+	font-family: 'Billabong';
+	src: url('./fonts/FontsFree-Net-Billabong.ttf');
+}
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	font-family: 'Open Sans';
 }
-
+button,
+a {
+	cursor: pointer;
+	margin: 0 0.2rem;
+}
+a {
+	color: #3b5998;
+	text-decoration: none;
+}
 body {
 	color: black;
 	background: white;
@@ -21,17 +36,17 @@ input[type='file'] {
 }
 
 .custom-file-upload {
-	font-size: 3rem;
-	color: rgba(247, 11, 101, 0.568);
+	color: black;
 	cursor: pointer;
 }
 
 .nav {
-	border-bottom: 3px solid black;
-	font-size: 1.5rem;
-	color: rgba(247, 11, 101, 0.568);
+	border-bottom: 1px solid #ececec;
+	font-size: 2.5rem;
 	letter-spacing: 4px;
 	padding: 0.8rem;
+	text-align: center;
+	font-family: 'Billabong';
 }
 
 h2 {
@@ -50,8 +65,8 @@ h2 {
 
 .img-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, 350px);
-	grid-template-rows: repeat(auto-fit, 350px);
+	grid-template-columns: repeat(auto-fit, 310px);
+	grid-template-rows: repeat(auto-fit, 310px);
 	grid-gap: 3rem;
 	justify-content: center;
 }

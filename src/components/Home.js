@@ -3,7 +3,6 @@ import ImageGrid from './ImageGrid';
 import Modal from './Modal';
 import { useState } from 'react';
 import Title from './Title';
-import UploadForm from './UploadForm';
 import StickyBar from './StickyBar';
 
 const Home = () => {
@@ -12,7 +11,6 @@ const Home = () => {
 		<div>
 			<Title />
 
-			<UploadForm />
 			<ImageGrid setSelectedImg={setSelectedImg} />
 			{selectedImg && (
 				<Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg} />

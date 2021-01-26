@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { FaUserCircle, FaHeart } from 'react-icons/fa';
 import { HiHome } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
+import UploadForm from './UploadForm';
 
 const StickyBar = () => {
 	return (
@@ -12,6 +13,9 @@ const StickyBar = () => {
 					{' '}
 					<HiHome />
 				</Link>
+			</div>
+			<div className='bar-icon'>
+				<UploadForm />
 			</div>
 			<div className='bar-icon'>
 				<Link to='/'>
