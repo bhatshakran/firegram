@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { AiFillFire } from 'react-icons/ai';
 import styled from 'styled-components';
-import doodle from '../images/364.jpg';
+
 import { useAuth } from '../context/AuthProvider';
 
 const PasswordReset = () => {
@@ -30,7 +30,7 @@ const PasswordReset = () => {
 	return (
 		<FormWrapper>
 			<h1>
-				FIREGRAM <AiFillFire />
+				Firegram <AiFillFire />
 			</h1>
 
 			<form>
@@ -55,12 +55,12 @@ const PasswordReset = () => {
 						Reset Password
 					</button>
 				</div>
-
-				<p className='notAuser'>
-					Dont have an account?
-					<Link to='/signup'>Sign Up here</Link> <br />
-				</p>
 			</form>
+
+			<p className='notAuser'>
+				Dont have an account?
+				<Link to='/signup'>Sign Up here</Link> <br />
+			</p>
 		</FormWrapper>
 	);
 };
@@ -76,19 +76,18 @@ width: 100%;
 	flex-direction: column;
 	align-items: center;
 	text-align:center;
-	background: url(${doodle});
-	background-size:cover;
-	background-position:center;
+	background:	rgba(248,248,248, 0.7);
+
 	h1{
 		margin-top:rem;
-		font-family: 'Comfortaa';
-		color: #fff;
+		
+		border-bottom: 1px solid #ececec;
 		padding:1rem;
-		background:linear-gradient(to right,#4b6cb7, #182848 );
+		font-family:'Billabong';
 		width: 100%;
-		border-bottom: 5px solid #82b74b;
+		font-weight:lighter;
 		font-size: 2rem;
-		letter-spacing: 5px;
+
 	}
 	.error{
 		background:rgba(255,0,0,0.6);
@@ -99,31 +98,28 @@ width: 100%;
 		font-family: arial;
 	}
 	h3 {
-		font-family: 'Raleway', sans-serif;
+		font-family: 'Open Sans';
 		margin: 1rem 0;
 		font-size: 2rem;
-		color:#fff;
-		background: #034f84;
 		width: 100%;
 		padding: 1rem 0;
-		border-radius: 20px;
+		font-weight:lighter;
 	}
 
 	form {
 		margin: 2rem 1rem;
 		width: calc(100% - 2rem);
-		box-shadow: 12px 4px 16px  0 rgba(0, 0, 0, 0.25),
-		-8px -8px 12px  rgba(0, 0, 0, 0.1);
+		max-width: 380px;
+		max-height: 350px;
 		padding: 2rem 0.5rem;
 		display:grid;
 		grid-template-columns: repeat(1, minmax(250px, 600px));
 		grid-template-rows: repeat(4, 100px);
-		align-items:Center;
+		align-items:flex-start;
 		justify-content:flex-start;
 		text-align: center;
-		background:  #fff;
-		background-size:cover;
-		border-radius: 40px;
+		border: 1px solid #ececec;	
+		background:#fff;
 	
 	}
 .form-control{
@@ -137,8 +133,9 @@ width: 100%;
 		padding: 0 0.3rem;
 		margin: 0.3rem 0;
 		width: 100%;
-		border: 1px solid black;
+		border: 1px solid #ececec;
 		background:rgba(255,255,255,0.9);
+		background:	rgba(248,248,248, 0.7);
 		
 	}
 
@@ -155,13 +152,12 @@ width: 100%;
 	}
 
 	button{
-		padding: 1rem;
+		padding: 0.5rem;
 		border: 0;
-		margin: 0.3rem auto;
 		color:#fff;
 		font-family: arial;
 		width: 100%;
-		border-radius: 12px;
+
 		
 	}
 	.btn-reset{
@@ -172,7 +168,12 @@ width: 100%;
 	
 	
 	.notAuser{
-		margin: 1rem;
+		border: 1px solid #ececec;
+		max-width: 380px;
+		width: calc(100%- 2rem);
+		margin: 0 1rem;
+		padding: 0 4rem;
+		background:#fff;
 	}
 	// ipad
 	@media screen and (min-width: 700px){

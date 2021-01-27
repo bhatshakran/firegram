@@ -1,30 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useAuth } from '../context/AuthProvider';
 import StickyBar from './StickyBar';
-
 import { BsFillGearFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
-import { projectStorage } from '../firebase/config';
+import { projectFirestore } from '../firebase/config';
+import { auth } from '../firebase/config';
 
 const ProfilePage = () => {
 	const [profilePic, setProfilePic] = useState();
-
-	const { currentUser } = useAuth();
+	const [website, setWebsite] = useState();
+	const [bio, setBio] = useState();
+	const [displayName, setDisplayName] = useState();
+	const [email, setEmail] = useState();
 
 	useEffect(() => {
 		let isSubscribed = true;
 		async function getUrl() {
 			try {
 				if (isSubscribed) {
-					var storageRef = projectStorage.ref();
-					var userRef = storageRef.child('users_dp');
+					var user = auth.currentUser;
+					var uid = user.uid;
+					if (user) {
+						try {
+							const userDocument = await projectFirestore
+								.doc(`users/${uid}`)
+								.get()
+								.then(async doc => {
+									const data = await doc.data();
 
-					var imageRef = userRef.child(`${currentUser.uid}/profile_pic.jpg`);
-
-					const url = await imageRef.getDownloadURL();
-
-					setProfilePic(url);
+									const { website, email, displayName, profilePic, bio } = data;
+									setWebsite(website);
+									setEmail(email);
+									setDisplayName(displayName);
+									setBio(bio);
+									setProfilePic(profilePic);
+								});
+							return userDocument;
+						} catch (error) {
+							console.error('Error fetching user', error);
+						}
+					}
 				}
 			} catch {
 				if (isSubscribed) {
@@ -58,7 +73,7 @@ const ProfilePage = () => {
 				</div>
 				<div className='username'>
 					{' '}
-					<strong> {currentUser.displayName}</strong>
+					<strong> {displayName}</strong>
 				</div>
 				<div className='follow-stuff'>
 					<p>
@@ -75,10 +90,17 @@ const ProfilePage = () => {
 					</p>
 				</div>
 				<div className='about'>
-					MERN Stack Dev <br />
-					Front End Dev
-					<br />
-					Passionate Coder
+					<strong>Bio: </strong>
+
+					{bio}
+				</div>
+				<div className='email'>
+					<strong>Email: </strong>
+					{email}
+				</div>
+				<div className='website'>
+					<strong>Website: </strong>
+					{website}
 				</div>
 			</div>
 			<StickyBar />
@@ -109,7 +131,7 @@ const ProfileWrapper = styled.div`
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(3, 100px);
-		grid-template-rows: repeat(6, 40px);
+		grid-template-rows: repeat(7, 40px);
 		grid-column-gap: 0.5rem;
 		justify-content: flex-start;
 		align-items: flex-start;
@@ -142,7 +164,7 @@ const ProfileWrapper = styled.div`
 		margin-left: 0;
 	}
 	.about {
-		grid-column: 2/4;
+		grid-column: 1/4;
 		padding: 0.5rem 0;
 		font-size: 0.9rem;
 		font-family: 'Open Sans';
@@ -161,5 +183,13 @@ const ProfileWrapper = styled.div`
 	}
 	.icon-gear a {
 		color: black;
+	}
+	.email {
+		grid-row: 5/6;
+		grid-column: 1/4;
+	}
+	.website {
+		grid-row: 6/7;
+		grid-column: 1/4;
 	}
 `;

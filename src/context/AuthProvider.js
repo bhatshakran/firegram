@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { auth, projectFirestore } from '../firebase/config';
+import { auth, projectFirestore, provider } from '../firebase/config';
 import { createContext } from 'react';
 
 const AuthContext = createContext();
@@ -22,6 +22,10 @@ export const AuthProvider = ({ children }) => {
 	// logout function
 	function logOut() {
 		return auth.signOut();
+	}
+	// google sign in function
+	function googleSignIn() {
+		return auth.signInWithRedirect(provider);
 	}
 	// set up name and pic function
 	function setupNameAndPhoto(name, pic) {
@@ -53,6 +57,7 @@ export const AuthProvider = ({ children }) => {
 	}
 	// value
 	const value = {
+		googleSignIn,
 		setupNameAndPhoto,
 		resetPassword,
 		logOut,

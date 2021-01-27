@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { AiFillFire } from 'react-icons/ai';
@@ -8,30 +8,34 @@ const SignUp = () => {
 	const emailRef = useRef();
 	const passwordRef = useRef();
 	const passwordConfirmRef = useRef();
-
+	let [isSubscribed, setIsSubscribed] = useState(true);
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
 	const { signUp } = useAuth();
 	const history = useHistory();
 	async function onSubmitHandler(e) {
 		e.preventDefault();
+		if (isSubscribed) {
+			if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+				return setError('Passwords do not match');
+			}
 
-		if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-			return setError('Passwords do not match');
+			try {
+				setError('');
+				setLoading(true);
+				await signUp(emailRef.current.value, passwordRef.current.value);
+
+				history.push('/');
+			} catch {
+				setError('Failed to create an account');
+			}
 		}
 
-		try {
-			setError('');
-			setLoading(true);
-			await signUp(emailRef.current.value, passwordRef.current.value);
-
-			history.push('/');
-		} catch {
-			setError('Failed to create an account');
-		}
 		setLoading(false);
 	}
-
+	useEffect(() => {
+		return () => setIsSubscribed(false);
+	}, []);
 	return (
 		<SignUpWrapper>
 			<form onSubmit={onSubmitHandler}>

@@ -19,17 +19,19 @@ const UploadForm = () => {
 		}
 	};
 	return (
-		<form>
-			<label className='custom-file-upload'>
-				<IoIosAddCircle />
-				<input type='file' onChange={changeHandler} />
-			</label>
+		<>
+			<form>
+				<label className='custom-file-upload'>
+					<IoIosAddCircle />
+					<input type='file' onChange={changeHandler} />
+				</label>
+			</form>
 			<div className='output'>
 				{error && <h3>{error}</h3>}
 				{file && <div>{file.name}</div>}
 				{file && <ProgressBar file={file} setFile={setFile} />}
 			</div>
-		</form>
+		</>
 	);
 };
 export default UploadForm;

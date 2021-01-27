@@ -55,7 +55,9 @@ h2 {
 	margin-bottom: 8px;
 	color: rgba(19, 58, 187, 0.897);
 }
-
+.output {
+	display: none;
+}
 .progress-bar {
 	height: 5px;
 	background: pink;

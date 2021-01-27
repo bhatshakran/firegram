@@ -19,10 +19,11 @@ firebase.initializeApp(firebaseConfig);
 
 const projectStorage = firebase.storage();
 const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
 const projectFirestore = firebase.firestore();
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
-const provider = new firebase.auth.GoogleAuthProvider();
+
 export const signInWithGoogle = () => {
 	auth.signInWithRedirect(provider);
 };
-export { projectStorage, projectFirestore, auth, timestamp };
+export { projectStorage, projectFirestore, auth, provider, timestamp };

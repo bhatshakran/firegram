@@ -9,12 +9,14 @@ const SignIn = () => {
 	const passwordRef = useRef();
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
-	const { signIn } = useAuth();
+	const { signIn, googleSignIn } = useAuth();
 	const history = useHistory();
 	let [isSubscribed, setIsSubscribed] = useState(true);
 	useEffect(() => {
 		return () => setIsSubscribed(false);
 	}, []);
+
+	// on submit handler
 	async function onSubmitHandler(e) {
 		e.preventDefault();
 
@@ -29,8 +31,22 @@ const SignIn = () => {
 			}
 			setLoading(false);
 		}
+	}
 
-		return () => (isSubscribed = false);
+	// google login
+	async function onClickHandler(e) {
+		e.preventDefault();
+		if (isSubscribed) {
+			try {
+				setError('');
+				setLoading(true);
+				await googleSignIn();
+				history.push('/');
+			} catch {
+				setError('Failed to Google Login');
+			}
+			setLoading(false);
+		}
 	}
 
 	return (
@@ -63,7 +79,7 @@ const SignIn = () => {
 						Log In
 					</button>
 					<p className='or'> -----------OR------------</p>
-					<a className='btn-signInWithGoogle' href='/'>
+					<a className='btn-signInWithGoogle' href='/' onClick={onClickHandler}>
 						Log In with Google
 					</a>
 					<p className='forgot'>
@@ -95,11 +111,15 @@ const FormWrapper = styled.section`
 	background:	rgba(248,248,248, 0.7);
 	
 	.error{
-		background:rgba(255,0,0,0.6);
+		color:rgba(255,0,0,0.6);
 		border-radius:5px;
 		width: 100%;
 		padding: 0.8rem;
-		color:#fff;
+		position:absolute;
+		top: 80px;
+		left: 50%;
+		transform:translateX(-50%);
+		font-weight: 800;
 		font-family: arial;
 	}
 	

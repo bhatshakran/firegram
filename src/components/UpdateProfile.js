@@ -5,37 +5,48 @@ import { useAuth } from '../context/AuthProvider';
 import { projectFirestore, projectStorage } from '../firebase/config';
 import StickyBar from './StickyBar';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 const UpdateProfile = () => {
+	const history = useHistory();
 	const usernameRef = useRef();
 	const picRef = useRef();
 	const bioRef = useRef();
 	const websiteRef = useRef();
 	const changeEmailRef = useRef();
 	const [displayName, setDisplayName] = useState();
-	// const [url, setUrl] = useState('');
-	const [profilePic, setProfilePic] = useState();
+	const [bio, setBio] = useState();
+	const [website, setWebsite] = useState();
+	const [url, setUrl] = useState('');
+
 	const [error, setError] = useState('');
+	const [updating, setUpdate] = useState(false);
 	const { logOut, currentUser } = useAuth();
 	// on change handler
 	function onChangeHandler() {
 		setDisplayName(usernameRef.current.value);
+		if (bioRef.current.value) {
+			setBio(bioRef.current.value);
+		}
+
+		if (websiteRef.current.value) {
+			setWebsite(websiteRef.current.value);
+		}
 	}
 	// handle profile pic
 	function handleProfilePic(e, uid) {
-		// const storageRef = projectStorage.ref(file.name);
-		// const collectionRef = projectFirestore.collection('users');
-		// collectionRef.doc(uid).update({ photoUrl: e.target.files[0] });
 		try {
+			setUpdate(true);
 			var storageRef = projectStorage.ref();
 			var userRef = storageRef.child('users_dp');
 			var imageRef = userRef.child(`${uid}/profile_pic.jpg`);
-			imageRef.put(e.target.files[0]).then(async () => {
+			imageRef.put(e.target.files[0]).then(async snap => {
+				let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
+				console.log(percentage);
 				const url = await imageRef.getDownloadURL();
-
-				// console.log(url);
-
-				setProfilePic(url);
+				setUrl(url);
+				console.log(url);
+				setUpdate(false);
 			});
 		} catch {
 			setError('Error, couldnt change profile pic.');
@@ -58,20 +69,57 @@ const UpdateProfile = () => {
 	const generateUserDocument = async user => {
 		if (!user) return;
 		const userRef = projectFirestore.doc(`users/${user.uid}`);
-
-		// if (!snapshot.exists) {
+		const snapshot = await userRef.get();
 		const { email, displayName } = user;
-		try {
-			await userRef.set({
-				displayName: displayName,
-				email,
-				profilePic: String(profilePic),
-			});
-			console.log('document created');
-		} catch (error) {
-			console.log('Error creating user document', error);
+
+		if (!snapshot.exists) {
+			try {
+				await userRef.set({
+					email: email,
+					displayName: displayName,
+					website: website,
+					bio: bio,
+					profilePic: String(url),
+				});
+				console.log('brand new document generated');
+				history.push('/profilepage');
+			} catch (error) {
+				console.log('couldnt generate document', error);
+			}
+		} else if (snapshot.exists) {
+			try {
+				if (url) {
+					await userRef.update({
+						profilePic: String(url),
+					});
+				}
+				if (displayName) {
+					await userRef.update({
+						displayName: displayName,
+					});
+				}
+				if (email) {
+					await userRef.update({
+						email: email,
+					});
+				}
+
+				if (bio) {
+					await userRef.update({
+						bio: [...bio],
+					});
+				}
+				if (website) {
+					await userRef.update({
+						website: website,
+					});
+				}
+				console.log('document created');
+				history.push('/profilepage');
+			} catch (error) {
+				console.log('Error updating user document', error);
+			}
 		}
-		// }
 		return getUserDocument(user.uid);
 	};
 	//   get user document
@@ -88,92 +136,95 @@ const UpdateProfile = () => {
 		}
 	};
 	// use effect
+	if (updating) {
+		return <div>Updating</div>;
+	} else if (!updating) {
+		return (
+			<UpdateWrapper>
+				<StickyBar />
+				<div className='header'>
+					<AiFillFire />
+					<div className='firegram'>Firegram</div>
+				</div>
+				<div className='update-details'>
+					<div>
+						<label className='pic-icon'>
+							<p>Update Profile Picture</p>
+							<div>
+								{' '}
+								<IoIosAddCircle />
+							</div>
+							<input
+								type='file'
+								id='img'
+								name='img'
+								accept='image/*'
+								ref={picRef}
+								onChange={e => handleProfilePic(e, currentUser.uid)}
+							/>
+						</label>
+					</div>
 
-	return (
-		<UpdateWrapper>
-			<StickyBar />
-			<div className='header'>
-				<AiFillFire />
-				<div className='firegram'>Firegram</div>
-			</div>
-			<div className='update-details'>
-				<div>
-					<label className='pic-icon'>
-						<p>Update Profile Picture</p>
-						<div>
-							{' '}
-							<IoIosAddCircle />
-						</div>
+					<div className='form-control'>
+						<label htmlFor='username'>Username:</label>
 						<input
-							type='file'
-							id='img'
-							name='img'
-							accept='image/*'
-							ref={picRef}
-							onChange={e => handleProfilePic(e, currentUser.uid)}
+							type='text'
+							placeholder='username'
+							name='username'
+							id='username'
+							ref={usernameRef}
+							onChange={onChangeHandler}
 						/>
-					</label>
-				</div>
+					</div>
+					<div className='form-control'>
+						<label htmlFor='bio'>Add bio:</label>
 
-				<div className='form-control'>
-					<label htmlFor='username'>Username:</label>
-					<input
-						type='username'
-						placeholder='username'
-						name='username'
-						id='username'
-						ref={usernameRef}
-						onChange={onChangeHandler}
-					/>
-				</div>
-				<div className='form-control'>
-					<label htmlFor='bio'>Add bio:</label>
-					<input
-						type='bio'
-						placeholder='bio'
-						name='bio'
-						id='bio'
-						ref={bioRef}
-						onChange={onChangeHandler}
-					/>
-				</div>
-				<div className='form-control'>
-					<label htmlFor='website'>Website:</label>
-					<input
-						type='website'
-						placeholder='website'
-						name='website'
-						id='website'
-						ref={websiteRef}
-						onChange={onChangeHandler}
-					/>
-				</div>
-				<div className='form-control'>
-					<label htmlFor='changeEmail'> Email:</label>
-					<input
-						type='changeEmail'
-						placeholder='changeEmail'
-						name='changeEmail'
-						id='changeEmail'
-						ref={changeEmailRef}
-						onChange={onChangeHandler}
-					/>
-				</div>
-				<div className='form-control '>
-					<a href='/signin'>
-						<button className='btn-logout' onClick={logOut}>
-							Logout
+						<input
+							type='text'
+							placeholder='bio'
+							name='bio'
+							id='bio'
+							ref={bioRef}
+							onChange={onChangeHandler}
+						/>
+					</div>
+					<div className='form-control'>
+						<label htmlFor='website'>Website:</label>
+						<input
+							type='text'
+							placeholder='website'
+							name='website'
+							id='website'
+							ref={websiteRef}
+							onChange={onChangeHandler}
+						/>
+					</div>
+					<div className='form-control'>
+						<label htmlFor='changeEmail'> Email:</label>
+						<input
+							type='text'
+							placeholder='changeEmail'
+							name='changeEmail'
+							id='changeEmail'
+							ref={changeEmailRef}
+						/>
+					</div>
+					<div className='form-control '>
+						<a href='/signin' className='log-out'>
+							<button className='btn-logout' onClick={logOut}>
+								Logout
+							</button>
+						</a>
+					</div>
+					<div className='form-control'>
+						<button className='btn-update' onClick={handleUpdate}>
+							Update
 						</button>
-					</a>
+					</div>
 				</div>
-				<div className='form-control'>
-					<button className='btn-update' onClick={handleUpdate}>
-						Update
-					</button>
-				</div>
-			</div>
-		</UpdateWrapper>
-	);
+			</UpdateWrapper>
+		);
+	}
 };
 
 export default UpdateProfile;
@@ -219,5 +270,8 @@ const UpdateWrapper = styled.div`
 	}
 	.btn-update {
 		background: #1fcecb;
+	}
+	.log-out {
+		margin: 0;
 	}
 `;
