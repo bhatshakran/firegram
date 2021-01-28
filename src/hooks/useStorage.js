@@ -4,12 +4,15 @@ import {
 	projectFirestore,
 	timestamp,
 } from '../firebase/config';
+import { useAuth } from '../context/AuthProvider';
 
 const useStorage = file => {
 	const [progress, setProgress] = useState(0);
 	const [error, setError] = useState(null);
 	const [url, setUrl] = useState(null);
-
+	const { currentUser } = useAuth();
+	console.log(currentUser);
+	const { displayName } = currentUser;
 	useEffect(() => {
 		// referances
 		const storageRef = projectStorage.ref(file.name);
@@ -26,10 +29,14 @@ const useStorage = file => {
 			async () => {
 				const url = await storageRef.getDownloadURL();
 				const createdAt = timestamp();
-				collectionRef.add({ url, createdAt });
+
+				const uploadedBy = displayName;
+
+				collectionRef.add({ url, createdAt, uploadedBy });
 				setUrl(url);
 			}
 		);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [file]);
 	return { progress, url, error };
 };

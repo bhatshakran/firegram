@@ -24,7 +24,10 @@ const UpdateProfile = () => {
 	const { logOut, currentUser } = useAuth();
 	// on change handler
 	function onChangeHandler() {
-		setDisplayName(usernameRef.current.value);
+		if (usernameRef.current.value) {
+			setDisplayName(usernameRef.current.value);
+		}
+
 		if (bioRef.current.value) {
 			setBio(bioRef.current.value);
 		}
@@ -56,12 +59,14 @@ const UpdateProfile = () => {
 	// handle the update
 
 	function handleUpdate() {
-		currentUser
-			.updateProfile({
-				displayName: displayName,
-			})
-			.then(() => console.log('update username'))
-			.catch(error => console.log(error));
+		if (displayName) {
+			currentUser
+				.updateProfile({
+					displayName: displayName,
+				})
+				.then(() => console.log('update username'))
+				.catch(error => console.log(error));
+		}
 
 		generateUserDocument(currentUser);
 	}
@@ -70,7 +75,7 @@ const UpdateProfile = () => {
 		if (!user) return;
 		const userRef = projectFirestore.doc(`users/${user.uid}`);
 		const snapshot = await userRef.get();
-		const { email, displayName } = user;
+		const { email } = user;
 
 		if (!snapshot.exists) {
 			try {
@@ -106,7 +111,7 @@ const UpdateProfile = () => {
 
 				if (bio) {
 					await userRef.update({
-						bio: [...bio],
+						bio: bio,
 					});
 				}
 				if (website) {
@@ -114,7 +119,7 @@ const UpdateProfile = () => {
 						website: website,
 					});
 				}
-				console.log('document created');
+				console.log('document updated');
 				history.push('/profilepage');
 			} catch (error) {
 				console.log('Error updating user document', error);
