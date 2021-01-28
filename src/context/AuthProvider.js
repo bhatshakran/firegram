@@ -25,7 +25,10 @@ export const AuthProvider = ({ children }) => {
 	}
 	// google sign in function
 	function googleSignIn() {
-		return auth.signInWithRedirect(provider);
+		return auth.signInWithPopup(provider).then(result => {
+			var credential = result.credential;
+			console.log(credential);
+		});
 	}
 	// set up name and pic function
 	function setupNameAndPhoto(name, pic) {
