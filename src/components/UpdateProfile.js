@@ -17,7 +17,7 @@ const UpdateProfile = () => {
 	const [displayName, setDisplayName] = useState();
 	const [bio, setBio] = useState();
 	const [website, setWebsite] = useState();
-	const [url, setUrl] = useState('');
+	const [url, setUrl] = useState();
 
 	const [error, setError] = useState('');
 	const [updating, setUpdate] = useState(false);
@@ -47,8 +47,8 @@ const UpdateProfile = () => {
 				let percentage = (snap.bytesTransferred / snap.totalBytes) * 100;
 				console.log(percentage);
 				const url = await imageRef.getDownloadURL();
+
 				setUrl(url);
-				console.log(url);
 				setUpdate(false);
 			});
 		} catch {
@@ -84,7 +84,7 @@ const UpdateProfile = () => {
 					displayName: displayName,
 					website: website,
 					bio: bio,
-					profilePic: String(url),
+					profilePic: url,
 				});
 				console.log('brand new document generated');
 				history.push('/profilepage');
@@ -95,7 +95,7 @@ const UpdateProfile = () => {
 			try {
 				if (url) {
 					await userRef.update({
-						profilePic: String(url),
+						profilePic: url,
 					});
 				}
 				if (displayName) {
@@ -119,6 +119,7 @@ const UpdateProfile = () => {
 						website: website,
 					});
 				}
+
 				console.log('document updated');
 				history.push('/profilepage');
 			} catch (error) {

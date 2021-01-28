@@ -27,13 +27,14 @@ const ProfilePage = () => {
 								.get()
 								.then(async doc => {
 									const data = await doc.data();
-
+									console.log(data.profilePic);
 									const { website, email, displayName, profilePic, bio } = data;
 									setWebsite(website);
 									setEmail(email);
 									setDisplayName(displayName);
 									setBio(bio);
 									setProfilePic(profilePic);
+									console.log(profilePic);
 								});
 							return userDocument;
 						} catch (error) {
